@@ -41,7 +41,8 @@ def redirects(origin):
             )
 
             if footprint_query is None:
-                r = httpx.get(f"https://ip-api.com/json/{ip}").json()
+                r = httpx.get(f"http://ip-api.com/json/{ip}").json()
+
                 footprint = Footprint(
                     ip=ip,
                     continent=r.get("continent", None),
