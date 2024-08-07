@@ -228,15 +228,16 @@ def table_browser():
     )
 
     data = (
-        View.query.where(View.user_id == current_user.id)
-        .add_columns(
+        View.query.with_entities(
+            View.browser,
             sa.func.count(View.id).label("views"),
             (sa.func.count(View.id) / total_browsers_count).label("percentage"),
-            sa.func.count(sa.distinct(View.short_id)).label("links"),
+            sa.func.count(sa.func.distinct(View.short_id)).label("links"),
         )
-        .group_by(View.browser, View.id)
-        .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
+        .where(View.user_id == current_user.id)
         .where(View.browser.ilike(f"%{search}%"))
+        .group_by(View.browser)
+        .order_by(sa.func.count(View.id).desc(), sa.text("percentage DESC"))
         .paginate(
             page=page, per_page=current_app.config["POSTS_PER_PAGE"], error_out=False
         )
@@ -273,15 +274,17 @@ def table_city():
         .where(Footprint.ip.in_([s.ip for s in current_user.views]))
         .scalar()
     )
+
     data = (
-        Footprint.query.where(Footprint.ip.in_([s.ip for s in current_user.views]))
-        .add_columns(
+        Footprint.query.with_entities(
+            Footprint.city,
             sa.func.count(Footprint.ip).label("views"),
             (sa.func.count(Footprint.ip) / total_footprints_count).label("percentage"),
         )
-        .group_by(Footprint.city, Footprint.ip)
-        .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
+        .where(Footprint.ip.in_([s.ip for s in current_user.views]))
         .where(Footprint.city.ilike(f"%{search}%"))
+        .group_by(Footprint.city)
+        .order_by(sa.func.count(Footprint.ip).desc(), sa.text("percentage DESC"))
         .paginate(
             page=page, per_page=current_app.config["POSTS_PER_PAGE"], error_out=False
         )
@@ -318,15 +321,17 @@ def table_country():
         .where(Footprint.ip.in_([s.ip for s in current_user.views]))
         .scalar()
     )
+
     data = (
-        Footprint.query.where(Footprint.ip.in_([s.ip for s in current_user.views]))
-        .add_columns(
+        Footprint.query.with_entities(
+            Footprint.country,
             sa.func.count(Footprint.ip).label("views"),
             (sa.func.count(Footprint.ip) / total_footprints_count).label("percentage"),
         )
-        .group_by(Footprint.country, Footprint.ip)
-        .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
+        .where(Footprint.ip.in_([s.ip for s in current_user.views]))
         .where(Footprint.country.ilike(f"%{search}%"))
+        .group_by(Footprint.country)
+        .order_by(sa.func.count(Footprint.ip).desc(), sa.text("percentage DESC"))
         .paginate(
             page=page, per_page=current_app.config["POSTS_PER_PAGE"], error_out=False
         )
@@ -365,15 +370,16 @@ def table_os():
     )
 
     data = (
-        View.query.where(View.user_id == current_user.id)
-        .add_columns(
+        View.query.with_entities(
+            View.os,
             sa.func.count(View.id).label("views"),
             (sa.func.count(View.id) / total_browsers_count).label("percentage"),
-            sa.func.count(sa.distinct(View.short_id)).label("links"),
+            sa.func.count(sa.func.distinct(View.short_id)).label("links"),
         )
-        .group_by(View.os, View.id)
-        .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
+        .where(View.user_id == current_user.id)
         .where(View.os.ilike(f"%{search}%"))
+        .group_by(View.os)
+        .order_by(sa.func.count(View.id).desc(), sa.text("percentage DESC"))
         .paginate(
             page=page, per_page=current_app.config["POSTS_PER_PAGE"], error_out=False
         )
@@ -412,15 +418,16 @@ def table_referrer():
     )
 
     data = (
-        View.query.where(View.user_id == current_user.id)
-        .add_columns(
+        View.query.with_entities(
+            View.referrer,
             sa.func.count(View.id).label("views"),
             (sa.func.count(View.id) / total_browsers_count).label("percentage"),
-            sa.func.count(sa.distinct(View.short_id)).label("links"),
+            sa.func.count(sa.func.distinct(View.short_id)).label("links"),
         )
-        .group_by(View.referrer, View.id)
-        .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
+        .where(View.user_id == current_user.id)
         .where(View.referrer.ilike(f"%{search}%"))
+        .group_by(View.referrer)
+        .order_by(sa.func.count(View.id).desc(), sa.text("percentage DESC"))
         .paginate(
             page=page, per_page=current_app.config["POSTS_PER_PAGE"], error_out=False
         )
