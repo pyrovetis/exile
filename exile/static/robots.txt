@@ -1,4 +1,4 @@
-Sitemap: /sitemap.xml
+Sitemap: https://exile.ir/sitemap.xml
 
 User-agent: *
 Allow: /
