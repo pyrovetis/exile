@@ -44,8 +44,7 @@
                 </li>
 
             </ul>
-            <ul class=" icons
-                            ">
+            <ul class="icons">
                 <li>
                     {% if current_user.is_anonymous %}
                         <a href="{{ url_for('auth.login') }}" hx-boost="true" class="contrast">
