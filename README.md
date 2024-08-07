@@ -41,7 +41,7 @@ AlpineJS, PicoCSS, and ChartJS, it provides a sleek and efficient user experienc
 
     ```bash
     python -m venv .venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
     ```
 
 3. **Install the dependencies:**
