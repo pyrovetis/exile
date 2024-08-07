@@ -1,0 +1,72 @@
+<article>
+    <form hx-put="{{ url_for('api.shorts_put', link_id=link.id) }}" hx-target="#short-edit" novalidate>
+        {{ form.hidden_tag() }}
+        <fieldset>
+            {{ form.destination.label() }}
+            {{ form.destination(**{"aria-invalid": "true" if form.destination.errors else "","aria-describedby": form.destination.name + "-helper"}) }}
+
+            {%- for error in form.destination.errors %}
+                <small id="{{ form.destination.name + "-helper" }}"
+                       class="text-error">{{ error }}</small>
+            {%- endfor %}
+
+            {{ form.origin.label() }}
+            <div role="group" class="remove-margin">
+                <input
+                        type="text"
+                        name="text"
+                        value="https://exile.ir/"
+                        aria-label="Read-only input"
+                        readonly
+                        style="width: 9rem"
+                />
+                {{ form.origin(**{"aria-invalid": "true" if form.origin.errors else "","aria-describedby": form.origin.name + "-helper"}) }}
+            </div>
+            {%- for error in form.origin.errors %}
+                <small id="{{ form.origin.name + "-helper" }}"
+                       class="text-error">{{ error }}</small>
+            {%- endfor %}
+
+            {{ form.note.label(class="margin-top") }}
+            {{ form.note(**{"aria-invalid": "true" if form.note.errors else "","aria-describedby": form.note.name + "-helper"}) }}
+            {%- for error in form.note.errors %}
+                <small id="{{ form.note.name + "-helper" }}"
+                       class="text-error">{{ error }}</small>
+            {%- endfor %}
+        </fieldset>
+
+        <div class="pure-g">
+            <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3">
+                {{ form.submit() }}
+            </div>
+
+            <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-2-3">
+                <div class="editing-buttons">
+                    <button class="outline secondary" type="button"
+                            hx-delete="{{ url_for('api.shorts_delete', link_id=link.id) }}" hx-swap="innerHTML"
+                            hx-params="none" hx-confirm="Are you sure you want to delete this link?">
+                        Delete
+                    </button>
+                    <a href="{{ url_for('dashboard.shorts') }}" class="pure-button pure-button-primary">
+                        <button class="outline contrast" type="button">
+                            Cancel
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</article>
+
+{% if edited %}
+    <script>
+        Toastify({
+            text: `Short link edited!`,
+            duration: 2000,
+            gravity: "bottom", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+        }).showToast()
+    </script>
+{% endif %}

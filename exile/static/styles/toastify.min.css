@@ -1,0 +1,74 @@
+.toastify {
+    padding: 12px 20px;
+    color: var(--pico-primary-inverse);
+    display: inline-block;
+    box-shadow: var(--pico-box-shadow);
+    background: var(--pico-primary-background);
+    position: fixed;
+    opacity: 0;
+    transition: var(--pico-transition);
+    border-radius: var(--pico-border-radius);
+    user-select: none;
+    text-decoration: none;
+    max-width: calc(50% - 20px);
+    z-index: 2147483647
+}
+
+.toastify.on {
+    opacity: 1
+}
+
+.toast-close {
+    background: 0 0;
+    border: 0;
+    color: var(--pico-color);
+    font-size: 1em;
+    opacity: .4;
+    padding: 0 5px
+}
+
+.toastify-right {
+    right: 15px
+}
+
+.toastify-left {
+    left: 15px
+}
+
+.toastify-top {
+    top: -150px
+}
+
+.toastify-bottom {
+    bottom: -150px
+}
+
+.toastify-rounded {
+    border-radius: 25px
+}
+
+.toastify-avatar {
+    width: 1.5em;
+    height: 1.5em;
+    margin: -7px 5px;
+    border-radius: 2px
+}
+
+.toastify-center {
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    max-width: fit-content;
+    max-width: -moz-fit-content
+}
+
+@media only screen and (max-width: 360px) {
+    .toastify-left, .toastify-right {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        max-width: fit-content
+    }
+}

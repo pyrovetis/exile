@@ -1,0 +1,100 @@
+{% from "components/macros.html" import td_origin %}
+{% from "components/macros.html" import td_destination %}
+
+<div hx-get="{{ url_for('api.table_dashboard') }}" hx-swap="outerHTML" hx-trigger="update from:body"
+     id="dashboard-table">
+    <article class="component">
+
+        <div class="pure-g">
+            <div class="pure-u-1 pure-u-lg-1-2">
+                <label>
+                    <input class="form-control" type="search"
+                           name="search" placeholder="Search by short link or original URL"
+                            {% if search %}
+                           value="{{ search }}"
+                            {% endif %}
+                           hx-get="{{ url_for('api.table_dashboard') }}"
+                           hx-trigger="input changed delay:1000ms"
+                           hx-target="#dashboard-table"
+                           hx-swap="outerHTML"
+                           hx-indicator=".header-loading-table">
+                </label>
+            </div>
+        </div>
+
+        <div class="overflow-auto">
+            <table class="stripped no-wrap">
+                <thead>
+                <tr>
+                    <th scope="col">Short Link</th>
+                    <th scope="col">Original Link</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Views</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody x-data>
+
+                {% for link in links %}
+                    <tr>
+                        <td>
+                            {{ td_origin(link.origin) }}
+                        </td>
+                        <td>
+                            {{ td_destination(link.destination) }}
+                        </td>
+                        <td>
+                        <span
+                                data-tooltip="{{ link.created_at.strftime('%Y-%m-%d %H:%M:%S') }}"
+                                x-data="{time() { return moment.utc('{{ link.created_at.isoformat() }}').fromNow()}}"
+                                x-text="time">
+                        </span>
+
+                        </td>
+                        <td>
+                            {{ link.views.count() }}
+                        </td>
+                        <td>
+                            <div>
+                                <button class="secondary small-button"
+                                        @click="(e) => handleCopy(e, '{{ link.origin }}')"
+                                        data-placement="left"
+                                >
+                                    Copy
+                                </button>
+                                <a href="{{ url_for('dashboard.edit', link_id=link.id) }}">
+                                    <button class="contrast small-button"
+                                    >
+                                        Edit
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            {% if not links.first %}
+                <h4 class="block text-center">No results found.</h4>
+            {% endif %}
+
+            {% if links.pages > 1 %}
+                <div class="pure-g pagination">
+                    <a class="contrast text-center cursor-pointer pure-u-1-3 {% if not prev_url %}opacity-0 pointer-none{% endif %}"
+                       hx-get="{{ prev_url }}"
+                       hx-target="#dashboard-table">Previous</a>
+
+                    <span class="text-center pure-u-1-3">{{ links.page }} / {{ links.pages }}</span>
+
+                    <a class="contrast text-center cursor-pointer pure-u-1-3 {% if not next_url %}opacity-0 pointer-none{% endif %}"
+                       hx-get="{{ next_url }}"
+                       hx-target="#dashboard-table">Next</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </article>
+
+</div>

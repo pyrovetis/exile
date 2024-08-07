@@ -1,0 +1,62 @@
+<article class="component">
+    <div class="overflow-auto">
+        <table class="stripped">
+            <thead>
+            <tr>
+                <th scope="col">Short Link</th>
+                <th scope="col">Original Link</th>
+                <th scope="col">Created</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody x-data="$store.data">
+            <template x-for="item in data">
+                <tr>
+                    <td>
+                        <span class="text-muted">exile.ir/</span><span x-text="item.o"></span>
+                    </td>
+                    <td>
+                            <span x-text="item.d?.replace(/(.{32})..+/, ' $1…').replace('http://', '').replace('https://', '')"
+                                  :title="item.d">
+                            </span>
+                    </td>
+                    <td>
+                        <span class="no-wrap" x-data="{get time() { return moment.utc(item.t).fromNow()}}"
+                              x-text="time">
+                        </span>
+                    </td>
+                    <td>
+                        <button class="secondary small-button"
+                                @click="(e) => handleCopy(e, item.o)"
+                                data-placement="left">
+                            Copy
+                        </button>
+                    </td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            const localHistory = document.querySelector('.local-history')
+            Alpine.store('data', {
+                init() {
+                    this.data = JSON.parse(localStorage.getItem('shorts'))
+                    if (localHistory && this.data?.length) {
+                        localHistory.classList.remove('opacity-0')
+                    }
+                },
+                update() {
+                    this.data = JSON.parse(localStorage.getItem('shorts'))
+                    if (localHistory && this.data?.length) {
+                        localHistory.classList.remove('opacity-0')
+                    }
+                },
+
+                data: [],
+            })
+        })
+    </script>
+</article>

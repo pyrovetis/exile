@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% import "components/wtf.html" as wtf %}
+
+{% block content %}
+    <div role="main">
+        <section>
+            <article>
+                <header>
+                    <h1>Sign In</h1>
+                </header>
+                {{ wtf.quick_form(form, method="POST") }}
+
+                <hr>
+                <p>New User?
+                    <a href="{{ url_for('auth.register') }}" hx-boost="true">Click to Register!</a>
+                </p>
+                <p>
+                    Forgot Your Password?
+                    <a href="{{ url_for('auth.reset_password_request') }}" hx-boost="true">Click to Reset It</a>
+                </p>
+            </article>
+        </section>
+    </div>
+{% endblock %}

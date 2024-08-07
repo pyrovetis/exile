@@ -1,0 +1,84 @@
+<div id="create-short-link">
+    <article>
+        {% if not current_user.is_authenticated %}
+            <form hx-post="{{ url_for('api.shorts') }}" hx-target="#create-short-link" hx-swap="outerHTML" novalidate>
+                {{ form.hidden_tag() }}
+                <fieldset role="group">
+                    {{ form.destination(autofocus=True, **{"aria-invalid": "true" if form.destination.errors else "","aria-describedby": form.destination.name + "-helper"}) }}
+                    {{ form.submit() }}
+                </fieldset>
+                {%- for error in form.destination.errors %}
+                    <small id="{{ form.destination.name + "-helper" }}"
+                           class="text-error">{{ error }}</small>
+                {%- endfor %}
+            </form>
+        {% else %}
+            <form hx-post="{{ url_for('api.shorts') }}" hx-target="#create-short-link" hx-swap="outerHTML" novalidate>
+                {{ form.hidden_tag() }}
+                <fieldset>
+                    {{ form.destination.label() }}
+                    {{ form.destination(autofocus=True, **{"aria-invalid": "true" if form.destination.errors else "","aria-describedby": form.destination.name + "-helper"}) }}
+
+                    {%- for error in form.destination.errors %}
+                        <small id="{{ form.destination.name + "-helper" }}"
+                               class="text-error">{{ error }}</small>
+                    {%- endfor %}
+
+                    {{ form.origin.label() }}
+                    <div role="group" class="remove-margin">
+                        <input
+                                type="text"
+                                name="text"
+                                value="https://exile.ir/"
+                                aria-label="Read-only input"
+                                readonly
+                                style="width: 9rem"
+                        />
+                        {{ form.origin(**{"aria-invalid": "true" if form.origin.errors else "","aria-describedby": form.origin.name + "-helper"}) }}
+                    </div>
+                    {%- for error in form.origin.errors %}
+                        <small id="{{ form.origin.name + "-helper" }}"
+                               class="text-error">{{ error }}</small>
+                    {%- endfor %}
+
+
+                    {{ form.note.label(class="margin-top") }}
+                    {{ form.note(**{"aria-invalid": "true" if form.note.errors else "","aria-describedby": form.note.name + "-helper"}) }}
+                    {%- for error in form.note.errors %}
+                        <small id="{{ form.note.name + "-helper" }}"
+                               class="text-error">{{ error }}</small>
+                    {%- endfor %}
+                </fieldset>
+                <div class="pure-g">
+                    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3">
+                        {{ form.submit() }}
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+    </article>
+
+    {% if short_data %}
+        <script>
+            Toastify({
+                text: `Short link created!`,
+                duration: 2000,
+                gravity: "bottom", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+            }).showToast()
+
+
+            localStorage.setItem("shorts", JSON.stringify(
+                [
+                    {{ short_data | tojson }},
+                    ...JSON.parse(localStorage.getItem("shorts")) ?? []
+                ].slice(0, 11)
+            ))
+
+            if (Alpine.store('data')) {
+                Alpine.store('data').update()
+            }
+        </script>
+    {% endif %}
+</div>

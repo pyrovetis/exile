@@ -1,0 +1,94 @@
+{% macro form_field(field, autofocus) %}
+    {%- if field.type == 'BooleanField' %}
+
+        {{ field(type="checkbox") }}
+        {{ field.label() }}
+
+    {%- elif field.type == 'RadioField' %}
+
+        {{ field.label() }}
+        {%- for item in field %}
+            <fieldset>
+                {{ item(type="radio") }}
+                {{ item.label() }}
+            </fieldset>
+        {%- endfor %}
+
+    {%- elif field.type == 'SelectField' %}
+
+        {{ field.label() }}
+        {{ field() }}
+
+    {%- elif field.type == 'TextAreaField' %}
+
+
+        {{ field.label() }}
+        {% if autofocus %}
+            {{ field(autofocus=True, **{"aria-invalid": "true" if field.errors else "","aria-describedby": field.name + "-helper"}) }}
+        {% else %}
+            {{ field(**{"aria-invalid": "true" if field.errors else "","aria-describedby": field.name + "-helper"}) }}
+        {% endif %}
+        {%- for error in field.errors %}
+            <small id="{{ field.name + "-helper" }}">{{ error }}</small>
+        {%- endfor %}
+
+
+    {%- elif field.type == 'SubmitField' %}
+
+        {{ field() }}
+
+    {%- else %}
+
+
+        {{ field.label() }}
+        {% if autofocus %}
+            {{ field(autofocus=True, **{"aria-invalid": "true" if field.errors else "","aria-describedby": field.name + "-helper"}) }}
+        {% else %}
+            {{ field(**{"aria-invalid": "true" if field.errors else "","aria-describedby": field.name + "-helper"}) }}
+        {% endif %}
+        {%- for error in field.errors %}
+            <small id="{{ field.name + "-helper" }}">{{ error }}</small>
+        {%- endfor %}
+
+
+    {%- endif %}
+{% endmacro %}
+
+{% macro quick_form(form, action="", method="", id="", novalidate=False, hx_target="", hx_swap="",hx_get="", hx_post="", hx_put="",hx_delete="") %}
+    <form novalidate
+            {%- if action %} action="{{ action }}"{% endif -%}
+            {%- if method %} method="{{ method }}"{% endif %}
+            {%- if id %} id="{{ id }}"{% endif -%}
+            {%- if novalidate %} novalidate{% endif -%}
+            {# HTMX #}
+            {%- if hx_target %} hx-target="{{ hx_target }}"{% endif -%}
+            {%- if hx_swap %} hx-swap="{{ hx_swap }}"{% endif -%}
+            {%- if hx_get %} hx-get="{{ hx_get }}"{% endif -%}
+            {%- if hx_post %} hx-post="{{ hx_post }}"{% endif -%}
+            {%- if hx_put %} hx-put="{{ hx_put }}"{% endif -%}
+            {%- if hx_delete %} hx-delete="{{ hx_delete }}"{% endif -%}
+
+    >
+        {{ form.hidden_tag() }}
+        {%- for field, errors in form.errors.items() %}
+            {%- if form[field].widget.input_type == 'hidden' %}
+                {%- for error in errors %}
+                    <small id="{{ error }}">{{ error }}</small>
+                {%- endfor %}
+            {%- endif %}
+        {%- endfor %}
+
+        <fieldset>
+            {% set ns = namespace(first_field=true) %}
+            {%- for field in form %}
+                {% if field.widget.input_type != "hidden" -%}
+                    {% if field.widget.input_type == "submit" %}
+                        </fieldset>
+                    {% endif %}
+                    {{ form_field(field, ns.first_field) }}
+                    {% set ns.first_field = false %}
+                {%- endif %}
+            {%- endfor %}
+
+    </form>
+{% endmacro %}

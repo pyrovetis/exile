@@ -1,0 +1,26 @@
+<article>
+    <div class="pure-g justify-end">
+        <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3">
+            <select name="timeframe" aria-label="Select a timeframe" hx-get="{{ url_for('api.chart_overview') }}"
+                    hx-trigger="change" hx-target="#chart-overview" hx-indicator=".header-loading-chart">
+                <option value="1" {{ "selected" if timeframe == 1 }}>Last 7 days</option>
+                <option value="2" {{ "selected" if timeframe == 2 }}>Last 6 months</option>
+                <option value="3" {{ "selected" if timeframe == 3 }}>Last 12 months</option>
+            </select>
+        </div>
+    </div>
+
+    <canvas id="chart" class="chart-container"></canvas>
+    {% if data|tojson == "null" %}
+        <small class="text-error">
+            No data available for this timeframe.
+        </small>
+    {% endif %}
+</article>
+
+
+<script>
+    var overviewChartLabels = {{ labels|tojson }};
+    var overviewChartDataset = {{ data|tojson }};
+</script>
+<script src="{{ url_for('static',filename='scripts/chart-overview.js') }}" defer></script>

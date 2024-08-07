@@ -1,0 +1,61 @@
+{% from "components/macros.html" import nav_link %}
+{% from "components/macros.html" import nav_link_controlled %}
+
+<div data-scroll-watcher></div>
+<aside id="dashboard-menu">
+    <header>
+        <h2>Dashboard</h2>
+        <a aria-label="Close" class="secondary menu-close" data-discover="true" href="/dashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="3"
+                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"
+                 class="icon-close">
+                <path d="M18 6l-12 12"></path>
+                <path d="M6 6l12 12"></path>
+            </svg>
+        </a>
+    </header>
+
+
+    <nav class="is-sticky-above-lg dashboard-menu">
+
+        <details open>
+            <summary
+                    {% if "dashboard" in url_for(request.endpoint) and "statistics" not in url_for(request.endpoint) %}
+                        aria-current="true" {% endif %}>Dashboard
+            </summary>
+            <ul>
+                <li>{{ nav_link("Quick Links", url_for('dashboard.dashboard')) }}</li>
+                <li>{{ nav_link("My Links", url_for('dashboard.shorts')) }}</li>
+                {% if current_id %}
+                    <li>{{ nav_link_controlled("Edit Short Link", url_for('dashboard.edit', link_id=current_id), is_editing) }}</li>
+                    <li>{{ nav_link_controlled("Short Link Statistics", url_for('dashboard.single_short', link_id=current_id), is_single) }}</li>
+                {% endif %}
+            </ul>
+        </details>
+
+        <details open>
+            <summary {% if "statistics" in url_for(request.endpoint) %}
+                aria-current="true" {% endif %} >
+                Statistics
+            </summary>
+            <ul>
+                <li>{{ nav_link("Overview", url_for('dashboard.statistics')) }}</li>
+                <li>{{ nav_link("Short Links", url_for('dashboard.statistics_short')) }}</li>
+                <li>{{ nav_link("Referrer", url_for('dashboard.statistics_referrer')) }}</li>
+                <li>{{ nav_link("Browser", url_for('dashboard.statistics_browser')) }}</li>
+                <li>{{ nav_link("OS", url_for('dashboard.statistics_os')) }}</li>
+                <li>{{ nav_link("Country", url_for('dashboard.statistics_country')) }}</li>
+                <li>{{ nav_link("City", url_for('dashboard.statistics_city')) }}</li>
+            </ul>
+        </details>
+
+    </nav>
+</aside>
+
+
+<script>
+    document.querySelector('.menu-close').addEventListener('click', (e) => {
+        e.preventDefault()
+        document.querySelector('#dashboard-menu').classList.toggle('is-open-on-mobile')
+    })
+</script>

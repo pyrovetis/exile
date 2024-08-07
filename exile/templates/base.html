@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Quickly turn long links into short, shareable ones. Track clicks and customize links—all for free. Simple, effective, and exile.">
+    <meta name="author" content="mhsn">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="exile">
+    <meta property="og:url" content="https://exile.ir">
+    {% set open_graph_image = [url_for('static', filename='open-graph/open-graph-1.webp'), url_for('static', filename='open-graph/open-graph-2.webp'), url_for('static', filename='open-graph/open-graph-3.webp'), url_for('static', filename='open-graph/open-graph-4.webp'), url_for('static', filename='open-graph/open-graph-5.webp')] | random %}
+    <meta property="og:image" content="{{ open_graph_image }}">
+    <meta property="og:description" content="Quickly turn long links into short, shareable ones. Track clicks, customize links, all for free. Simple. Effective. Exile.
+">
+
+    {% if title %}
+        <title>Exile - {{ title }}</title>
+    {% else %}
+        <title>Exile</title>
+    {% endif %}
+
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="{{ url_for("static", filename="favicon/apple-touch-icon.png") }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="{{ url_for("static", filename="favicon/favicon-32x32.png") }}">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="{{ url_for("static", filename="favicon/favicon-16x16.png") }}">
+    <link rel="manifest" href="{{ url_for("static", filename="favicon/site.webmanifest") }}">
+
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.amber.min.css"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/expand.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/toastify.min.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/global.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/pico.css') }}">
+
+    <script src="https://unpkg.com/htmx.org@2.0.0"
+            integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw"
+            crossorigin="anonymous"></script>
+
+    <script>
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let theme = localStorage.getItem("theme") ? localStorage.getItem("theme") : (prefersDarkScheme ? "dark" : "light");
+
+        function toggleTheme() {
+            theme = theme === "light" ? "dark" : "light";
+            localStorage.setItem("theme", theme);
+            setTheme(theme);
+        }
+
+        function setTheme(mode) {
+            if (mode === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        setTheme(theme);
+    </script>
+
+    <style>
+        :root {
+            --logo-dark-url: url("{{ url_for('static', filename='images/exile/dark.svg') }}");
+            --logo-light-url: url("{{ url_for('static', filename='images/exile/light.svg') }}");
+            --mhsn-dark-url: url("{{ url_for('static', filename='images/mhsn/dark.svg') }}");
+            --mhsn-light-url: url("{{ url_for('static', filename='images/mhsn/light.svg') }}");
+        }
+    </style>
+</head>
+<body>
+
+{% include 'components/header.html' %}
+
+<main class="container">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <section>
+                    <article>
+                        {{ message }}
+                    </article>
+                </section>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+
+    {% block content %}{% endblock %}
+
+
+</main>
+
+{% include 'components/footer.html' %}
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{ moment.include_moment(no_js=True) }}
+
+
+</body>
+</html>

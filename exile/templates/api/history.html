@@ -1,0 +1,13 @@
+{% for history in history %}
+    <article class="component">
+        <p>Origin: <a href="https://exile.ir/{{ history.origin }}">https://exile.ir/{{ history.origin }}</a></p>
+        <p>Destination: <a href="{{ history.destination }}">{{ history.destination }}</a></p>
+        <p>Note: {{ history.note }}</p>
+        <p>Updated:
+            <span data-tooltip
+                          ="{{ history.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}"
+                  x-data="{time() { return moment.utc('{{ history.updated_at.isoformat() }}').fromNow()}}"
+                  x-text="time" class="border-none"></span>
+        </p>
+    </article>
+{% endfor %}

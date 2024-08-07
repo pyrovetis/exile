@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% from "components/macros.html" import breadcrumbs %}
+
+{% block content %}
+    {% include "components/dashboard-navigation.html" %}
+    {{ breadcrumbs("Browsers") }}
+
+    <hgroup>
+        <p class="chapter">Statistics</p>
+        <h1>Browsers</h1>
+        <p>See which browsers your users are using to access your links.</p>
+    </hgroup>
+
+    <div role="main">
+        <section>
+
+            <div class="header-with-loading">
+                <h2>Browser Usage Chart</h2>
+                <img class="htmx-indicator header-loading header-loading-chart"
+                     src="{{ url_for('static',filename='images/loading/tube-spinner.svg') }}"
+                     alt="Loading...">
+            </div>
+            <p>This chart illustrates the distribution of browsers used to access your shortened links, providing
+                insights
+                into user preferences and compatibility.</p>
+
+            <div hx-get="{{ url_for('api.chart_browser') }}" hx-trigger="load once" hx-swap="innerHTML"
+                 id="chart-overview">
+                <img class="htmx-indicator chart-loading"
+                     src="{{ url_for('static',filename='images/loading/tube-spinner.svg') }}"
+                     alt="Loading...">
+            </div>
+        </section>
+
+        <section>
+            <div class="header-with-loading">
+                <h2>Browser Usage Table</h2>
+                <img class="htmx-indicator header-loading header-loading-table"
+                     src="{{ url_for('static',filename='images/loading/tube-spinner.svg') }}"
+                     alt="Loading...">
+            </div>
+            <p>This table provides a detailed breakdown of browsers used by visitors to access your links, including
+                their
+                percentage distribution.</p>
+
+            <div hx-get="{{ url_for('api.table_browser') }}" hx-trigger="load once" hx-swap="outerHTML"></div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+{% endblock %}

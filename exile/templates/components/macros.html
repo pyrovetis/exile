@@ -1,0 +1,80 @@
+{# macro for navigation links #}
+{% macro nav_link(name, url) %}
+    <a {% if url_for(request.endpoint) == url %}
+        aria-current="page" {% endif %} hx-boost="true" data-discover="true" class="secondary"
+        href="{{ url }}"> {{ name }} </a>
+{% endmacro %}
+
+{% macro nav_link_controlled(name, url, active) %}
+    <a {% if active %}aria-current="page" {% endif %} hx-boost="true" data-discover="true" class="secondary"
+       href="{{ url }}"> {{ name }} </a>
+{% endmacro %}
+
+
+{# table for dashboard overview #}
+{% macro small_table(title, description, header, data, link) %}
+    <article class="overflow-auto">
+        <header>
+            <h3>{{ title }}</h3>
+            <small>{{ description }}</small>
+        </header>
+
+        {% if data | length > 0 %}
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">{{ header[0] }}</th>
+                    <th scope="col">{{ header[1] }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in data %}
+                    <tr>
+                        <th scope="row">{{ item[0] }}</th>
+                        <td>{{ item[1] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+
+
+        {% if data | length >= 5 %}
+            <a href="{{ link }}">see more »</a>
+        {% endif %}
+    </article>
+{% endmacro %}
+
+{# breadcrumbs #}
+{% macro breadcrumbs(current) %}
+    <nav aria-label="breadcrumb" class="breadcrumbs">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/dashboard" class="menu-trigger">Dashboard</a></li>
+            <li>{{ current }}</li>
+        </ul>
+    </nav>
+
+    <script>
+        document.querySelector('.menu-trigger').addEventListener('click', (e) => {
+            e.preventDefault()
+            document.querySelector('#dashboard-menu').classList.toggle('is-open-on-mobile')
+        })
+
+    </script>
+{% endmacro %}
+
+{# data tables #}
+{% macro td_origin(link, truncate_width=20) %}
+    <div title="https://exile.ir/{{ link }}">
+        <span class="text-muted">exile.ir/</span><span>{{ link | truncate(truncate_width) | replace("https://", "") | replace("http://", "") }}</span>
+    </div>
+{% endmacro %}
+
+{% macro td_destination(link, truncate_width=40) %}
+    <span title="{{ link }}">
+        {{ link | truncate(truncate_width) | replace("https://", "") | replace("http://", "") }}
+    </span>
+{% endmacro %}

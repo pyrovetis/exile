@@ -1,0 +1,63 @@
+{% from "components/macros.html" import small_table %}
+{% from "components/macros.html" import breadcrumbs %}
+
+{% extends "base.html" %}
+
+
+{% block content %}
+    {% include "components/dashboard-navigation.html" %}
+    {{ breadcrumbs("Overview") }}
+
+    <hgroup>
+        <p class="chapter">Statistics</p>
+        <h1>Overview</h1>
+        <p>Get a comprehensive view of your link performance. Here you can analyze click rates, top-performing
+            links,
+            and overall usage statistics.</p>
+    </hgroup>
+
+    <div role="main">
+        <section>
+            <div class="header-with-loading">
+                <h2>Short Link Performance Chart</h2> <img
+                    class="htmx-indicator header-loading header-loading-chart"
+                    src="{{ url_for('static',filename='images/loading/tube-spinner.svg') }}"
+                    alt="Loading...">
+            </div>
+            <p>Evaluate the effectiveness of shortened links through detailed performance metrics and
+                visualizations.</p>
+
+            <div hx-get="{{ url_for('api.chart_overview') }}" hx-trigger="load once" hx-swap="innerHTML"
+                 id="chart-overview">
+                <img class="htmx-indicator chart-loading"
+                     src="{{ url_for('static',filename='images/loading/tube-spinner.svg') }}"
+                     alt="Loading...">
+            </div>
+        </section>
+
+
+        <section>
+            <h2>Top Performance Metrics</h2>
+            <p>Gain insights into your audience and link performance with these detailed breakdowns.</p>
+
+
+            <div>
+                <div class="grid">
+                    {{ small_table("Top Shorts", description="Discover your most popular links based on click-through rates.", header=("Short", "Views"), data=shorts, link=url_for('dashboard.statistics_short')) }}
+                    {{ small_table("Top Referrers", description="Identify the websites driving traffic to your shortened links.", header=("Referrer", "Views"), data=referrers, link=url_for('dashboard.statistics_referrer')) }}
+                </div>
+                <div class="grid">
+                    {{ small_table("Top Browsers", description="See which browsers your users are using to access your links.", header=("Browser", "Views"), data=browsers, link=url_for('dashboard.statistics_browser')) }}
+                    {{ small_table("Top Operating Systems", description="Understand the operating systems your audience is on.", header=("Operating System", "Views"), data=os, link=url_for('dashboard.statistics_os')) }}
+                </div>
+                <div class="grid">
+                    {{ small_table("Top Countries", description="Discover the geographic distribution of your clicks.", header=("Country", "Views"), data=countries, link=url_for('dashboard.statistics_country')) }}
+                    {{ small_table("Top Cities", description="Identify the cities with the highest number of clicks.", header=("City", "Views"), data=cities, link=url_for('dashboard.statistics_city')) }}
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+{% endblock %}

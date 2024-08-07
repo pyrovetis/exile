@@ -1,0 +1,72 @@
+{% from "components/macros.html" import td_origin %}
+{% from "components/macros.html" import td_destination %}
+
+<div hx-get="{{ url_for('api.table_country') }}" hx-trigger="update from:body" id="dashboard-table">
+    <article class="component">
+
+        <div class="pure-g">
+            <div class="pure-u-1 pure-u-lg-1-2">
+                <input class="form-control" type="search"
+                       name="search" placeholder="Search by short link or original URL"
+                        {% if search %}
+                       value="{{ search }}"
+                        {% endif %}
+                       hx-get="{{ url_for('api.table_country') }}"
+                       hx-trigger="input changed delay:1000ms"
+                       hx-target="#dashboard-table"
+                       hx-swap="outerHTML"
+                       hx-indicator=".header-loading-table">
+            </div>
+        </div>
+
+
+        <div class="overflow-auto">
+            <table class="stripped no-wrap">
+                <thead>
+                <tr>
+                    <th scope="col">Country</th>
+                    <th scope="col">Views</th>
+                    <th scope="col">Percentage</th>
+                </tr>
+                </thead>
+                <tbody x-data>
+
+                {% for item in data %}
+                    <tr>
+                        <td>
+                            {{ item[0].country }}
+                        </td>
+                        <td>
+                            {{ item[1] }}
+                        </td>
+                        <td>
+                            {{ (item[2] * 100) | round(2) }}%
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            {% if not data.first %}
+                <h4 class="block text-center">No results found.</h4>
+            {% endif %}
+
+            {% if data.pages > 1 %}
+                <div class="pure-g pagination">
+                    <a class="contrast text-center cursor-pointer pure-u-1-3 {% if not prev_url %}opacity-0 pointer-none{% endif %}"
+                       hx-get="{{ prev_url }}"
+                       hx-target="#dashboard-table">Previous</a>
+
+                    <span class="text-center pure-u-1-3">{{ data.page }} / {{ data.pages }}</span>
+
+                    <a class="contrast text-center cursor-pointer pure-u-1-3 {% if not next_url %}opacity-0 pointer-none{% endif %}"
+                       hx-get="{{ next_url }}"
+                       hx-target="#dashboard-table">Next</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </article>
+
+</div>

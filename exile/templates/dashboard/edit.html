@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "components/macros.html" import breadcrumbs %}
+
+{% block content %}
+    {% include "components/dashboard-navigation.html" %}
+    {{ breadcrumbs("Edit Short Link") }}
+
+
+    <hgroup>
+        <p class="chapter">Link Editor</p>
+        <h1>Edit Your Link</h1>
+        <p>Customize your short link.</p>
+    </hgroup>
+
+
+    <div role="main">
+        <section>
+            <h2>Edit Short Link</h2>
+            <p>Modify the details of your existing short link below.</p>
+
+            <div id="short-edit">
+                {% include "api/edit.html" %}
+            </div>
+        </section>
+
+        <section>
+            <h2>Short Link History</h2>
+            <p>View a record of changes made to this short link below.</p>
+
+            <div id="short-history" hx-get="{{ url_for('api.shorts_history', link_id=link.id) }}"
+                 hx-trigger="load once, update from:body">
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
