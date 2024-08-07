@@ -81,13 +81,14 @@
 
 {% include 'components/header.html' %}
 
+
 <main class="container">
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
-                <section>
-                    <article>
+                <section style="grid-column: 1 / none;">
+                    <article class="remove-margin">
                         {{ message }}
                     </article>
                 </section>
@@ -95,10 +96,7 @@
         {% endif %}
     {% endwith %}
 
-
-
     {% block content %}{% endblock %}
-
 
 </main>
 
