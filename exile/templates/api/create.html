@@ -4,7 +4,7 @@
             <form hx-post="{{ url_for('api.shorts') }}" hx-target="#create-short-link" hx-swap="outerHTML" novalidate>
                 {{ form.hidden_tag() }}
                 <fieldset role="group">
-                    {{ form.destination(autofocus=True, **{"aria-invalid": "true" if form.destination.errors else "","aria-describedby": form.destination.name + "-helper"}) }}
+                    {{ form.destination(autofocus=True, **{"aria-invalid": "true" if form.destination.errors else "","aria-describedby": form.destination.name + "-helper", "aria-label": "Destination URL"}) }}
                     {{ form.submit() }}
                 </fieldset>
                 {%- for error in form.destination.errors %}
