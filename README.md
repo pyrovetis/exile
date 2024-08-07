@@ -1,8 +1,8 @@
 # Exile
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="/exile/static/images/exile/dark.svg">
-  <img alt="Exile logo" src="/exile/static/images/exile/light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="/exile/static/images/exile/light.svg">
+  <img alt="Exile logo" src="/exile/static/images/exile/dark.svg">
 </picture>
 
 Exile is a URL shortener with tracking features. Built with a modern stack including Flask, SQLAlchemy, Postgres, HTMX,
