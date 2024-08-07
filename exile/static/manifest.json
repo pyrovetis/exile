@@ -1,0 +1,26 @@
+{
+  "theme_color": "#13171fe6",
+  "background_color": "#c79400",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "/images/pwa/icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "/images/pwa/icon512_rounded.png",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "any",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "en-US",
+  "name": "Exile",
+  "short_name": "exile",
+  "start_url": "https://exile.ir",
+  "scope": "https://exile.ir"
+}
