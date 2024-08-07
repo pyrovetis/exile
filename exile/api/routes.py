@@ -234,7 +234,7 @@ def table_browser():
             (sa.func.count(View.id) / total_browsers_count).label("percentage"),
             sa.func.count(sa.distinct(View.short_id)).label("links"),
         )
-        .group_by(View.browser)
+        .group_by(View.browser, View.id)
         .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
         .where(View.browser.ilike(f"%{search}%"))
         .paginate(
@@ -279,7 +279,7 @@ def table_city():
             sa.func.count(Footprint.ip).label("views"),
             (sa.func.count(Footprint.ip) / total_footprints_count).label("percentage"),
         )
-        .group_by(Footprint.city)
+        .group_by(Footprint.city, Footprint.ip)
         .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
         .where(Footprint.city.ilike(f"%{search}%"))
         .paginate(
@@ -324,7 +324,7 @@ def table_country():
             sa.func.count(Footprint.ip).label("views"),
             (sa.func.count(Footprint.ip) / total_footprints_count).label("percentage"),
         )
-        .group_by(Footprint.country)
+        .group_by(Footprint.country, Footprint.ip)
         .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
         .where(Footprint.country.ilike(f"%{search}%"))
         .paginate(
@@ -371,7 +371,7 @@ def table_os():
             (sa.func.count(View.id) / total_browsers_count).label("percentage"),
             sa.func.count(sa.distinct(View.short_id)).label("links"),
         )
-        .group_by(View.os)
+        .group_by(View.os, View.id)
         .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
         .where(View.os.ilike(f"%{search}%"))
         .paginate(
@@ -418,7 +418,7 @@ def table_referrer():
             (sa.func.count(View.id) / total_browsers_count).label("percentage"),
             sa.func.count(sa.distinct(View.short_id)).label("links"),
         )
-        .group_by(View.referrer)
+        .group_by(View.referrer, View.id)
         .order_by(sa.desc("views"), sa.desc(sa.text("percentage")))
         .where(View.referrer.ilike(f"%{search}%"))
         .paginate(
