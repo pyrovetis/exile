@@ -1,13 +1,13 @@
-from datetime import datetime, timezone
-from hashlib import md5
-from time import time
-from typing import Optional
-
 import jwt
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from datetime import datetime, timezone
 from flask import current_app
 from flask_login import UserMixin
+from hashlib import md5
+from sqlalchemy import DateTime
+from time import time
+from typing import Optional
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from exile import db, login
@@ -58,7 +58,8 @@ class Short(db.Model):
     origin: so.Mapped[str] = so.mapped_column(sa.String(128), index=True, unique=True)
     destination: so.Mapped[str] = so.mapped_column(sa.String(1024))
     created_at: so.Mapped[datetime] = so.mapped_column(
-        default=lambda: datetime.now(timezone.utc)
+        sa.DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
     )
     note: so.Mapped[Optional[str]] = so.mapped_column(sa.Text())
 
@@ -76,6 +77,7 @@ class Short(db.Model):
 class View(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     time: so.Mapped[datetime] = so.mapped_column(
+        sa.DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc)
     )
     referrer: so.Mapped[Optional[str]] = so.mapped_column(sa.String(64))
@@ -138,6 +140,7 @@ class History(db.Model):
     origin: so.Mapped[str] = so.mapped_column(sa.String(128), index=True)
     destination: so.Mapped[str] = so.mapped_column(sa.String(1024))
     updated_at: so.Mapped[datetime] = so.mapped_column(
+        sa.DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc)
     )
     note: so.Mapped[str] = so.mapped_column(sa.Text())
