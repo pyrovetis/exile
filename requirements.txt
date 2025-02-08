@@ -41,6 +41,8 @@ flask-wtf==1.2.2
     # via exile (pyproject.toml)
 greenlet==3.1.1
     # via sqlalchemy
+gunicorn==23.0.0
+    # via exile (pyproject.toml)
 h11==0.14.0
     # via httpcore
 httpcore==1.0.7
@@ -66,7 +68,9 @@ markupsafe==3.0.2
     #   werkzeug
     #   wtforms
 packaging==24.2
-    # via flask-moment
+    # via
+    #   flask-moment
+    #   gunicorn
 pyjwt==2.10.1
     # via exile (pyproject.toml)
 python-dateutil==2.9.0.post0
