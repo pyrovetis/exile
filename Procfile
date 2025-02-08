@@ -1,1 +1,1 @@
-web: flask run --host=0.0.0.0
+web: gunicorn -w 1 -b 0.0.0.0:8000 --access-logfile=- app:app
