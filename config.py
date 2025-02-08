@@ -21,5 +21,3 @@ class Config:
     ADMINS = ["exile@azarmanesh.dev"]
 
     POSTS_PER_PAGE = 10
-
-    RATELIMIT_HEADERS_ENABLED = True

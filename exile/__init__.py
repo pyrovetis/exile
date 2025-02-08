@@ -20,10 +20,6 @@ mail = Mail()
 moment = Moment()
 
 
-def get_cache_key(request):
-    return request.url
-
-
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
