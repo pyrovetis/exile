@@ -1,1 +1,1 @@
-web: gunicorn --worker-class gevent --workers 2 --threads=2 --bind 0.0.0.0:8000 --access-logfile=- app:app
+web: gunicorn --workers 2 --threads=2 --bind 0.0.0.0:8000 --access-logfile=- app:app
