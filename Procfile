@@ -1,1 +1,1 @@
-web: gunicorn -w 1 -b 127.0.0.1:8000 app:app
+web: gunicorn -w 1 -b 0.0.0.0:8000 --access-logfile=- app:app
