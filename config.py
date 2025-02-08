@@ -18,7 +18,7 @@ class Config:
     MAIL_USE_SSL = os.environ.get("MAIL_USE_SSL") is not None
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-    ADMINS = ["no-reply@exile.ir"]
+    ADMINS = ["exile@azarmanesh.dev"]
 
     POSTS_PER_PAGE = 10
 
