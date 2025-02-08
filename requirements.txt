@@ -71,6 +71,8 @@ packaging==24.2
     # via
     #   flask-moment
     #   gunicorn
+psycopg2==2.9.10
+    # via exile (pyproject.toml)
 pyjwt==2.10.1
     # via exile (pyproject.toml)
 python-dateutil==2.9.0.post0
