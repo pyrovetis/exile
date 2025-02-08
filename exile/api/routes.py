@@ -10,7 +10,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 
-from exile import db, limiter
+from exile import db
 from exile.api import bp
 from exile.api.forms import ShortForm, EditForm
 from exile.models import Short, View, Footprint, History
@@ -70,7 +70,6 @@ def shorts():
 
 @bp.route("/shorts/<link_id>", methods=["PUT"])
 @login_required
-@limiter.limit("20 per day")
 def shorts_put(link_id):
     """Edit an existing short link."""
     form = EditForm()

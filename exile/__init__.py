@@ -3,13 +3,9 @@ import os
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
-from flask_compress import Compress
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
-from flask_minify import Minify
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
@@ -22,13 +18,6 @@ login.login_view = "auth.login"
 login.login_message = "Please log in to access this page."
 mail = Mail()
 moment = Moment()
-compress = Compress()
-limiter = Limiter(
-    get_remote_address,
-    default_limits=["200 per day", "500 per hour"],
-    storage_uri="memory://",
-)
-minify = Minify(html=True, js=True, cssless=True, static=True)
 
 
 def get_cache_key(request):
@@ -44,9 +33,6 @@ def create_app(config_class=Config):
     login.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
-    compress.init_app(app)
-    minify.init_app(app)
-    limiter.init_app(app)
 
     # errors
     from exile.errors import bp as errors_bp
